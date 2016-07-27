@@ -80,4 +80,15 @@ class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedList
         }
     }
 
+	public function markThreadRead(array $thread, array $forum, $readDate, array $viewingUser = null)
+	{
+		$this->standardizeViewingUserReference($viewingUser);
+
+		SV_OptimizedListQueries_Async::run(new XenForo_Model_Thread(), array($thread, $forum, $readDate, $viewingUser), __FUNCTION__);
+	}
+
+	public function logThreadView($threadId)
+	{
+		SV_OptimizedListQueries_Async::run(new XenForo_Model_Thread(), $threadId, __FUNCTION__);
+	}
 }
